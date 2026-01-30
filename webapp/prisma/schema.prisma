@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id        String     @id @default(cuid())
+  linuxDoId String     @unique
+  username  String
+  avatarUrl String?
+  createdAt DateTime   @default(now())
+
+  feedbacks Feedback[]
+  replies   Reply[]    @relation("AdminReplies")
+}
+
+model Feedback {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  isPublic  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  replies Reply[]
+
+  @@index([isPublic, createdAt])
+  @@index([userId, createdAt])
+}
+
+model Reply {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+
+  feedbackId String
+  feedback   Feedback @relation(fields: [feedbackId], references: [id], onDelete: Cascade)
+
+  adminUserId String?
+  adminUser   User?   @relation("AdminReplies", fields: [adminUserId], references: [id], onDelete: SetNull)
+
+  @@index([feedbackId, createdAt])
+}

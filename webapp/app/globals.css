@@ -1,0 +1,24 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+:root {
+  --bg: #f2f0ea;
+  --surface: #fbfaf6;
+  --fg: #171717;
+  --muted: #5f6368;
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system,
+    Segoe UI, Roboto, Arial, "Noto Sans", "PingFang SC", "Microsoft YaHei",
+    sans-serif;
+}
