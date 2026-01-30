@@ -20,6 +20,9 @@ RUN --mount=type=cache,target=/root/.npm \
 
 FROM base AS builder
 ENV NODE_ENV=development
+# Next build 阶段会 import server 代码；如果没提供 DATABASE_URL，Prisma 单例会在 import 时抛错。
+# 这里给一个仅用于构建阶段的 SQLite 路径，避免 CI/CD 构建失败。
+ENV DATABASE_URL="file:./dev.db"
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npx prisma generate
