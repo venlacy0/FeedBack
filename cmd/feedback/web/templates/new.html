@@ -1,0 +1,30 @@
+{{define "new.html"}}{{template "layout.html" .}}{{end}}
+
+{{define "new.content"}}
+<div class="header">
+  <div>
+    <h1 class="h2">写反馈</h1>
+    <p class="muted">写清楚问题、复现路径、期望行为，解决会快很多。</p>
+  </div>
+</div>
+
+<form class="panel form" action="/new" method="post">
+  <label class="field">
+    <span class="field__label">标题</span>
+    <input class="input" name="title" placeholder="一句话说清楚：例如 “登录回调 500”" maxlength="200" />
+  </label>
+
+  <label class="field">
+    <span class="field__label">内容（支持 Markdown）</span>
+    <textarea class="textarea" name="content" rows="12" placeholder="- 发生了什么\n- 期望是什么\n- 我做过的排查\n- 相关截图/日志"></textarea>
+  </label>
+
+  <label class="check">
+    <input type="checkbox" name="is_public" value="1" checked />
+    <span>公开到反馈广场</span>
+  </label>
+
+  <button class="btn btn--primary" type="submit">提交</button>
+</form>
+{{end}}
+

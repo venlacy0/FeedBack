@@ -1,0 +1,33 @@
+{{define "me.html"}}{{template "layout.html" .}}{{end}}
+
+{{define "me.content"}}
+<div class="header">
+  <div>
+    <h1 class="h2">我的反馈</h1>
+    <p class="muted">这里显示你提交过的反馈（包含私有）。</p>
+  </div>
+  <a class="btn btn--primary" href="/new">写反馈</a>
+</div>
+
+{{if eq (len .Feedback) 0}}
+  <div class="panel">
+    <div class="muted">你还没有提交过反馈。</div>
+  </div>
+{{else}}
+  <section class="list">
+    {{range .Feedback}}
+      <a class="item" href="/square/{{.ID}}">
+        <div class="item__main">
+          <div class="item__title">{{.Title}}</div>
+          <div class="item__excerpt">{{.Content}}</div>
+          <div class="meta">{{if .IsPublic}}公开{{else}}私有{{end}}</div>
+        </div>
+        <div class="item__meta">
+          <div class="item__time">{{.CreatedAt.Format "2006-01-02 15:04"}}</div>
+        </div>
+      </a>
+    {{end}}
+  </section>
+{{end}}
+{{end}}
+

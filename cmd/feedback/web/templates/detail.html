@@ -1,0 +1,63 @@
+{{define "detail.html"}}{{template "layout.html" .}}{{end}}
+
+{{define "detail.content"}}
+<div class="row row--between row--gap">
+  <div class="minw0">
+    <h1 class="h2">{{.Item.Title}}</h1>
+    <div class="meta">
+      {{if .Item.IsPublic}}公开{{else}}私有{{end}} · {{.Item.Username}} · {{.Item.CreatedAt.Format "2006-01-02 15:04"}}
+    </div>
+  </div>
+  <a class="btn" href="/square">返回广场</a>
+</div>
+
+<article class="panel prose">
+  {{md .Item.Content}}
+</article>
+
+<section class="section">
+  <div class="row row--between">
+    <h2 class="h3">管理员回复</h2>
+    <div class="muted">{{len .Replies}} 条</div>
+  </div>
+
+  {{if eq (len .Replies) 0}}
+    <div class="panel panel--tight">
+      <div class="muted">暂无回复。</div>
+    </div>
+  {{else}}
+    <div class="stack">
+      {{range .Replies}}
+        <div class="panel panel--tight">
+          <div class="meta">
+            <strong>管理员{{if .AdminUsername}}（{{.AdminUsername}}）{{end}}</strong> · {{.CreatedAt.Format "2006-01-02 15:04"}}
+          </div>
+          <div class="prose prose--tight">{{md .Content}}</div>
+        </div>
+      {{end}}
+    </div>
+  {{end}}
+
+  {{if .Session.IsAdmin}}
+    <div class="panel">
+      <div class="row row--between">
+        <h3 class="h3">写回复</h3>
+        <div class="muted">仅管理员可回复</div>
+      </div>
+
+      {{if .FlashError}}
+        <div class="alert">{{.FlashError}}</div>
+      {{end}}
+
+      <form class="form" action="/square/{{.Item.ID}}/reply" method="post">
+        <label class="field">
+          <span class="field__label">内容（支持 Markdown）</span>
+          <textarea class="textarea" name="content" rows="8" placeholder="- 结论\n- 原因\n- 下一步建议\n\n```text\n示例\n```"></textarea>
+        </label>
+        <button class="btn btn--primary" type="submit">发送回复</button>
+      </form>
+    </div>
+  {{end}}
+</section>
+{{end}}
+

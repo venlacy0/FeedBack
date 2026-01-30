@@ -1,0 +1,45 @@
+{{define "layout.html"}}
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{{if .Title}}{{.Title}} - {{end}}反馈站</title>
+    <link rel="stylesheet" href="/static/app.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="wrap topbar__inner">
+        <a class="brand" href="/">
+          <span class="brand__mark" aria-hidden="true">F</span>
+          <span class="brand__name">反馈站</span>
+        </a>
+
+        <nav class="nav">
+          <a class="nav__link" href="/square">反馈广场</a>
+          {{if .IsAuthed}}
+            <a class="nav__link" href="/new">写反馈</a>
+            <a class="nav__link" href="/me">我的反馈</a>
+            <a class="nav__link" href="/logout">退出</a>
+          {{else}}
+            <a class="nav__link nav__link--strong" href="/login">登录</a>
+          {{end}}
+          <a class="nav__link" href="/admin">管理员</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap main">
+      {{template (printf "%s.content" .Page) .}}
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer__inner">
+        <span>反馈站</span>
+        <span>公开内容可被所有人查看</span>
+        <span>&copy; {{nowYear}}</span>
+      </div>
+    </footer>
+  </body>
+</html>
+{{end}}

@@ -1,0 +1,39 @@
+{{define "home.html"}}{{template "layout.html" .}}{{end}}
+
+{{define "home.content"}}
+<section class="panel">
+  <h1 class="h1">把反馈说清楚，比把情绪说大声更有用</h1>
+  <p class="muted">
+    支持公开反馈与私有反馈。公开反馈会进入「反馈广场」，任何人都能查看与搜索；私有反馈仅你和管理员可见。内容支持 Markdown（已做基础清理）。
+  </p>
+
+  <div class="row row--gap">
+    {{if .User}}
+      <div class="badge">已登录：<strong>{{.User.Username}}</strong></div>
+      <a class="btn btn--primary" href="/new">写一条反馈</a>
+      <a class="btn" href="/me">看看我写过的</a>
+    {{else}}
+      <a class="btn btn--primary" href="/login">使用 Linux DO Connect 登录</a>
+      <a class="btn" href="/square">先逛逛广场</a>
+    {{end}}
+  </div>
+
+  <div class="hint">广场当前公开反馈：<strong>{{.PublicCount}}</strong></div>
+</section>
+
+<section class="grid3">
+  <div class="card">
+    <div class="card__title">公开反馈</div>
+    <div class="card__body">面向所有人展示，适合产品建议、体验吐槽、可复用的解决思路。</div>
+  </div>
+  <div class="card">
+    <div class="card__title">私有反馈</div>
+    <div class="card__body">只有你和管理员能看到，适合涉及隐私、账号、订单、截图链接等内容。</div>
+  </div>
+  <div class="card">
+    <div class="card__title">Markdown</div>
+    <div class="card__body">支持标题、列表、代码块、引用、链接等，表达更清晰。</div>
+  </div>
+</section>
+{{end}}
+

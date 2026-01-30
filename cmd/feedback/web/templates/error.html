@@ -1,0 +1,13 @@
+{{define "error.html"}}{{template "layout.html" .}}{{end}}
+
+{{define "error.content"}}
+<div class="panel">
+  <h1 class="h2">出错了</h1>
+  <p class="muted">{{.FlashError}}</p>
+  <div class="row row--gap">
+    <a class="btn btn--primary" href="/">回首页</a>
+    <a class="btn" href="/square">去广场</a>
+  </div>
+</div>
+{{end}}
+
