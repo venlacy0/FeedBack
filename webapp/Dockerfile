@@ -1,6 +1,8 @@
+## syntax=docker/dockerfile:1.7
 FROM node:22-bookworm-slim AS base
 
 ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 WORKDIR /app
 
 # better-sqlite3 需要本地编译工具链
@@ -10,15 +12,18 @@ RUN apt-get update \
 
 FROM base AS deps
 ENV NODE_ENV=development
+ARG NPM_CONFIG_REGISTRY
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN --mount=type=cache,target=/root/.npm \
+  if [ -n "${NPM_CONFIG_REGISTRY:-}" ]; then npm config set registry "$NPM_CONFIG_REGISTRY"; fi \
+  && npm ci --no-audit --no-fund
 
 FROM base AS builder
 ENV NODE_ENV=development
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npx prisma generate
-RUN npm run build
+RUN --mount=type=cache,target=/app/.next/cache npm run build
 RUN npm prune --omit=dev
 
 FROM base AS runner
@@ -43,4 +48,3 @@ EXPOSE 3000
 
 ENTRYPOINT ["./docker-entrypoint.sh"]
 CMD ["npm", "start"]
-
